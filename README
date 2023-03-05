@@ -1,0 +1,19 @@
+                                Cauia Alexandru 324CB
+                            TEMA1 Protocoale de Comunicatie
+In cadrul acestei teme am implementat procesul de dirijare a pachetelor dintr-un router.
+Din cele 4 parti ale temei le-am rezolvat pe 3:procesul de dririjare, Longest prefix match eficient,
+Protocolul ICMP si bonusul.
+
+Inainte de a incepe procesul propriu zis de forward imi creez un packet si aloc memorie pentru
+tabelele route si arp. Sortez tabela toute cu ajutorul functiei qsort si stochez intr-o
+variabila lungimea tabelei arp.
+
+Intrand in while am extras din payload ether headerul, cu ajutorul caruia am putut verifica daca packetul este de tip IP. 
+Daca este de alt tip il arunc, daca nu, pot sa extrag ip headerul. Urmatorul pas este sa verific daca tipul icmp-ului este Echo Request
+si daca adresa destinatie este egala cu cea a routerului s trimit packetul icmp cu raspuns echo reply.
+
+Pentru a trimite packetul mai am de facut cateva verificari. Daca checksumul e gresit arunc packetul. 
+Daca ttl-ul e 0 sau 1 inseamna ca packetul cicleaza si tot il arunc trimitand un mesaj de tipul "Time exceeded".
+Apoi, folosind cautarea binara gasesc cea mai buna ruta in tabelul de rutare.
+Daca functia intoarce NULL intorc un pachet icmp cu mesajul de eroare "Destination Unreachable". 
+La sfarsit aflu mac-ul interfetei si setez mac-ul hop-ului urmator. Apoi trimit pachetul.
